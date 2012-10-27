@@ -1,0 +1,1 @@
+crontab: 0 1 * * * /home/server/scripts/backups.sh
