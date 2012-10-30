@@ -9,4 +9,4 @@ CLEARCOUNT=10
 
 #======================================================================#
 DATECLEAR=`date -d $CLEARCOUNT' day ago' +'%d'`
-echo $BACKDIR/$DATECLEAR.tar
+rm $BACKDIR/$DATECLEAR.tar
