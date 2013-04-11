@@ -314,6 +314,23 @@ esac
 
 if [ $SUCCESS -eq 1 ]; then
   bk_log "Backup successfully finished."
+  
+  if [ $SUCCESS_EMAIL_SEND -eq 1 ]; then
+    touch $SUCCESS_EMAIL_BODY_FILENAME
+    echo "On $(bk_getTime) $DATELOG backup succeed" >> $SUCCESS_EMAIL_BODY_FILENAME
+    lineNumbers=$(wc -l $LOG_FILE)
+    lineNumbers=${lineNumbers% *}
+    lineNumbers=$((lineNumbers))
+    currentLogStartLineNumber=$(echo "$(grep -n "Date: $DATELOG" $LOG_FILE | tail -1)" | cut -d ':' -f 1)
+    currentLogStartLineNumber=$((currentLogStartLineNumber-3))
+    linesDifference=$((lineNumbers-currentLogStartLineNumber))
+    currentLog=$(tail -n $linesDifference $LOG_FILE)
+    echo -e "$currentLog" >> $SUCCESS_EMAIL_BODY_FILENAME
+    
+    bk_email "$SUCCESS_EMAIL_SUBJECT $(bk_getTime)" $SUCCESS_EMAIL_TO $SUCCESS_EMAIL_BODY_FILENAME
+    
+    rm $SUCCESS_EMAIL_BODY_FILENAME
+  fi
 else
   bk_log "Backup finished with failure."
   
@@ -325,8 +342,8 @@ else
     lineNumbers=$((lineNumbers))
     currentLogStartLineNumber=$(echo "$(grep -n "Date: $DATELOG" $LOG_FILE | tail -1)" | cut -d ':' -f 1)
     currentLogStartLineNumber=$((currentLogStartLineNumber-3))
-    linesFifference=$((lineNumbers-currentLogStartLineNumber))
-    currentLog=$(tail -n $linesFifference $LOG_FILE)
+    linesDifference=$((lineNumbers-currentLogStartLineNumber))
+    currentLog=$(tail -n $linesDifference $LOG_FILE)
     echo -e "$currentLog" >> $FAILURE_EMAIL_BODY_FILENAME
     
     bk_email "$FAILURE_EMAIL_SUBJECT $(bk_getTime)" $FAILURE_EMAIL_TO $FAILURE_EMAIL_BODY_FILENAME

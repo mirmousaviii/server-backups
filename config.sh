@@ -48,7 +48,7 @@ ARCHIVE_FILES="/etc /opt /selinux"
 SCP_SERVER="MySafeServer.com"
 
 # Server username which will be used for SCP and SSH
-SCP_USER="pouyan"
+SCP_USER="server_username"
 
 # Server password which will be used for SCP and SSH
 # You can also share public key and provide no password
@@ -61,10 +61,15 @@ SCP_LOC="/path/on/secure/server/to/upload/backup"
 MAX_SCP_RETRY=1
 
 # Email configs
-FAILURE_EMAIL_SEND=0
+FAILURE_EMAIL_SEND=1
 FAILURE_EMAIL_SUBJECT="Backup failed on"
 FAILURE_EMAIL_TO="notify@mailserver.com"
 FAILURE_EMAIL_BODY_FILENAME=$TEMPDIR/failure_mail
+
+SUCCESS_EMAIL_SEND=1
+SUCCESS_EMAIL_SUBJECT="Backup successfully finished on"
+SUCCESS_EMAIL_TO="notify@mailserver.com"
+SUCCESS_EMAIL_BODY_FILENAME=$TEMPDIR/seccess_mail
 
 #Debug option. Set to 1 if you wanna get msgs
 DEBUG_MODE=0
