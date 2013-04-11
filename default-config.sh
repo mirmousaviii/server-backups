@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #--------------------------------Config--------------------------------#
 
 # Server's name
@@ -69,7 +69,7 @@ FAILURE_EMAIL_BODY_FILENAME=$TEMPDIR/failure_mail
 SUCCESS_EMAIL_SEND=1
 SUCCESS_EMAIL_SUBJECT="Backup successfully finished on"
 SUCCESS_EMAIL_TO="notify@mailserver.com"
-SUCCESS_EMAIL_BODY_FILENAME=$TEMPDIR/seccess_mail
+SUCCESS_EMAIL_BODY_FILENAME=$TEMPDIR/success_mail
 
 #Debug option. Set to 1 if you wanna get msgs
 DEBUG_MODE=0

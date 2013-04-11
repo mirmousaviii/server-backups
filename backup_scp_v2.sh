@@ -4,33 +4,13 @@
 #    1. Correct output in bk_ssh when password is provided
 #    2. Get Log files as argument
 
-# Set config variables
-set SERVER
-set BACKDIR
-set TEMPDIR
-set LOG_FILE
-set TAR_LOG_FILE
-set GZIP_LOG_FILE
-set DATENAME
-set DATELOG
-set DATELOG_FILES
-set HOST
-set USER
-set PASS
-set DBS
-set ARCHIVE_FILES
-set SCP_SERVER
-set SCP_USER
-set SCP_LOC
-set MAX_SCP_RETRY
-set FAILURE_EMAIL_SEND
-set FAILURE_EMAIL_SUBJECT
-set FAILURE_EMAIL_TO
-set FAILURE_EMAIL_BODY_FILENAME
-set DEBUG_MODE
+__DIR__=$(dirname $0)
+
+# Include switch controller
+source $__DIR__/switch.sh
 
 # Including config file
-source $(dirname $0)/config.sh
+source $configFilename
 
 SSH_PASS_IS_SET=1
 if [ -z "$SCP_PASS" ]; then
