@@ -55,7 +55,7 @@ SCP_USER="pouyan"
 # SCP_PASS="Password"
 
 # Location on server which will be used for SCP
-SCP_LOC="/home/pouyan/backups"
+SCP_LOC="/path/on/secure/server/to/upload/backup"
 
 # Maximum SCP and MD5 Check retry in case of failure
 MAX_SCP_RETRY=1
