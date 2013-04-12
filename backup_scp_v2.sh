@@ -219,7 +219,7 @@ SUCCESS=0
 bk_mkdirIfNotExists $BACKDIR
 bk_mkdirIfNotExists $TEMPDIR
 
-if [ $DBS = "ALL" ]; then
+if [ "$DBS" = "ALL" ]; then
   bk_log "Creating list of all your databases:"
   DBS=`mysql -h $HOST --user=$USER --password=$PASS -Bse "show databases;" | tr '\n' ' '`
   bk_log "Done"
