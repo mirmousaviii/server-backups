@@ -316,6 +316,13 @@ if [ $SUCCESS -eq 1 ]; then
     
     rm $SUCCESS_EMAIL_BODY_FILENAME
   fi
+  
+  # Remove sql dumps
+  cd $TEMPDIR
+  for databaseFilename in $ARCHIVE_SQL_FILES
+  do
+    rm $databaseFilename
+  done
 else
   bk_log "Backup finished with failure."
   
@@ -336,13 +343,6 @@ else
     rm $FAILURE_EMAIL_BODY_FILENAME
   fi
 fi
-
-# Remove sql dumps
-cd $TEMPDIR
-for databaseFilename in $ARCHIVE_SQL_FILES
-do
-  rm $databaseFilename
-done
 
 bk_log_separator
 bk_log_separator
