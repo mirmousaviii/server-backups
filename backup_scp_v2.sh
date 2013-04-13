@@ -88,7 +88,8 @@ bk_compress(){
   cd $TEMPDIR
 
   bk_log "Tar is gonna begin:"
-  nice -n 19 tar -cf $2 $1 >> $TAR_LOG_FILE
+  bk_log "Running: tar -cf $2 $1"
+  nice -n 19 tar -cf $2 $1 > $TAR_LOG_FILE
   local tarOutput=$?
   bk_log "Tar returned: "$tarOutput
 
@@ -100,7 +101,8 @@ bk_gzip(){
   #   1: Tar file path to gzip
 
   bk_log "Gzipping is gonna begin:"
-  nice -n 19 gzip -f --fast $1 >> $GZIP_LOG_FILE
+  bk_log "Running: gzip -f --fast $1"
+  nice -n 19 gzip -f --fast $1 > $GZIP_LOG_FILE
   local gzipOutput=$?
   bk_log "Gzip returned: "$gzipOutput
 
@@ -317,12 +319,8 @@ if [ $SUCCESS -eq 1 ]; then
     rm $SUCCESS_EMAIL_BODY_FILENAME
   fi
   
-  # Remove sql dumps
-  cd $TEMPDIR
-  for databaseFilename in $ARCHIVE_SQL_FILES
-  do
-    rm $databaseFilename
-  done
+  # Remove temp
+  rm -rf $TEMPDIR/*
 else
   bk_log "Backup finished with failure."
   
