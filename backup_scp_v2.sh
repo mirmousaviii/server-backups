@@ -3,6 +3,7 @@
 # TO DO
 #    1. Correct output in bk_ssh when password is provided
 #    2. Get Log files as argument
+#    3. Make verbose optional by -v switch
 
 __DIR__=$(dirname $0)
 
@@ -87,7 +88,7 @@ bk_compress(){
   cd $TEMPDIR
 
   bk_log "Tar is gonna begin:"
-  nice -n 19 tar -cvf $2 $1 >> $TAR_LOG_FILE
+  nice -n 19 tar -cf $2 $1 >> $TAR_LOG_FILE
   local tarOutput=$?
   bk_log "Tar returned: "$tarOutput
 
@@ -99,7 +100,7 @@ bk_gzip(){
   #   1: Tar file path to gzip
 
   bk_log "Gzipping is gonna begin:"
-  nice -n 19 gzip -f -v --fast $1 >> $GZIP_LOG_FILE
+  nice -n 19 gzip -f --fast $1 >> $GZIP_LOG_FILE
   local gzipOutput=$?
   bk_log "Gzip returned: "$gzipOutput
 
