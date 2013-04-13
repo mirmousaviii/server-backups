@@ -175,9 +175,11 @@ bk_md5Check(){
   remoteServer=$4
   pass=$5
   
+  bk_log "MD5s R gonna B checked"
+  
   local localFileMD5=$(md5sum $localFilename)
   localFileMD5=${localFileMD5% *}
-  bk_debug "Local MD5: $localFileMD5"
+  bk_log "Local MD5: $localFileMD5"
   
   set local remoteFileMD5
   if [ -z "$pass" ]; then
@@ -186,12 +188,14 @@ bk_md5Check(){
     remoteFileMD5=$(bk_ssh $remoteUsername $remoteServer "md5sum $remoteFilename" "$pass")
   fi
   remoteFileMD5=${remoteFileMD5% *}
-  bk_debug "Remote MD5: $remoteFileMD5"
+  bk_log "Remote MD5: $remoteFileMD5"
   
   if [ $localFileMD5 = $remoteFileMD5 ]; then
+    bk_log "MD5s match"
     return 1;
   else
     return 0;
+    bk_log "MD5s doesn't match"
   fi
 }
 
