@@ -89,7 +89,7 @@ bk_compress(){
 
   bk_log "Tar is gonna begin:"
   bk_log "Running: tar -cf $2 $1"
-  nice -n 19 tar --ignore-failed-read -cf $2 $1 2> $TAR_LOG_FILE
+  nice -n 19 tar cf $2 --ignore-failed-read $1 2> $TAR_LOG_FILE
   local tarOutput=$?
   bk_log "Tar returned: "$tarOutput
 
