@@ -89,7 +89,7 @@ bk_compress(){
 
   bk_log "Tar is gonna begin:"
   bk_log "Running: tar -cf $2 $1"
-  nice -n 19 tar --ignore-failed-read -cf $2 $1 > $TAR_LOG_FILE
+  nice -n 19 tar --ignore-failed-read -cf $2 $1 2> $TAR_LOG_FILE
   local tarOutput=$?
   bk_log "Tar returned: "$tarOutput
 
@@ -102,7 +102,7 @@ bk_gzip(){
 
   bk_log "Gzipping is gonna begin:"
   bk_log "Running: gzip -f --fast $1"
-  nice -n 19 gzip -f --fast $1 > $GZIP_LOG_FILE
+  nice -n 19 gzip -f --fast $1 2> $GZIP_LOG_FILE
   local gzipOutput=$?
   bk_log "Gzip returned: "$gzipOutput
 
