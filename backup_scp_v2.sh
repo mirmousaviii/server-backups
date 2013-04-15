@@ -88,7 +88,6 @@ bk_compress(){
   cd $TEMPDIR
 
   bk_log "Tar is gonna begin:"
-  bk_log "Running: tar -cf $2 $1"
   nice -n 19 tar cf $2 --ignore-failed-read $1 2> $TAR_LOG_FILE
   local tarOutput=$?
   bk_log "Tar returned: "$tarOutput
@@ -101,7 +100,6 @@ bk_gzip(){
   #   1: Tar file path to gzip
 
   bk_log "Gzipping is gonna begin:"
-  bk_log "Running: gzip -f --fast $1"
   nice -n 19 gzip -f --fast $1 2> $GZIP_LOG_FILE
   local gzipOutput=$?
   bk_log "Gzip returned: "$gzipOutput
@@ -304,7 +302,7 @@ if [ $SUCCESS -eq 1 ]; then
   
   if [ $SUCCESS_EMAIL_SEND -eq 1 ]; then
     touch $SUCCESS_EMAIL_BODY_FILENAME
-    echo "On $(bk_getTime) $DATELOG backup succeed" >> $SUCCESS_EMAIL_BODY_FILENAME
+    echo "On $(bk_getTime) $DATELOG backup succeed" > $SUCCESS_EMAIL_BODY_FILENAME
     lineNumbers=$(wc -l $LOG_FILE)
     lineNumbers=${lineNumbers% *}
     lineNumbers=$((lineNumbers))
@@ -326,7 +324,7 @@ else
   
   if [ $FAILURE_EMAIL_SEND -eq 1 ]; then
     touch $FAILURE_EMAIL_BODY_FILENAME
-    echo "On $(bk_getTime) $DATELOG backup failed" >> $FAILURE_EMAIL_BODY_FILENAME
+    echo "On $(bk_getTime) $DATELOG backup failed" > $FAILURE_EMAIL_BODY_FILENAME
     lineNumbers=$(wc -l $LOG_FILE)
     lineNumbers=${lineNumbers% *}
     lineNumbers=$((lineNumbers))
@@ -343,4 +341,4 @@ else
 fi
 
 bk_log_separator
-bk_log_separator
+bk_log "@@@###################################################@@@"
