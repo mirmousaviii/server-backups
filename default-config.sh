@@ -40,9 +40,12 @@ PASS=Root_Password
 # set to 'ALL' if you want to backup all your databases
 DBS="ALL"
 
-# List all files and directories you wanna tar, separated by a space
+# List all files and directories you wanna tar, separated by a space ARCHIVE_FILES
+# List all files & directories which have probability of change during tar job, separated by a space in ARCHIVE_VAR_FILES
+# Var files whould be completely addressed
 # Relative addresses R related to `TEMPDIR`
-ARCHIVE_FILES="/etc /opt /selinux"
+ARCHIVE_FILES="/etc /opt /selinux /var"
+ARCHIVE_VAR_FILES="/var/log"
 
 # Server hostname or IP Address which will be used for SCP and SSH
 SCP_SERVER="MySafeServer.com"

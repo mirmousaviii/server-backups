@@ -4,6 +4,7 @@
 #    1. Correct output in bk_ssh when password is provided
 #    2. Get Log files as argument
 #    3. Make verbose optional by -v switch
+#    4. Write bk_optimizeFilenames
 
 __DIR__=$(dirname $0)
 
@@ -19,6 +20,8 @@ if [ -z "$SCP_PASS" ]; then
 fi
 
 #--------------------------------Functionz--------------------------------#
+
+#--------------Indicators
 
 bk_debug(){
   if [ $DEBUG_MODE -eq 1 ]; then
@@ -48,6 +51,9 @@ bk_log_separator(){
   bk_log "      ~~~---------------------------------------~~~"
 }
 
+#--------------~~~~~~~~~
+
+# Makes directory if not exists
 bk_mkdirIfNotExists(){
   # Arguments:
   #   1: Directory Path
@@ -57,6 +63,19 @@ bk_mkdirIfNotExists(){
     mkdir -p $1
     bk_log "Done"
   fi
+}
+
+# Removes '/' after directory name
+bk_optimizeFilenames(){
+  # Arguments:
+  #   1: Filename(s) separated by space
+  
+  filenames=$1
+  tmpFilenames=$filenames
+  
+  for filename in "$filenames"
+  do
+  done
 }
 
 bk_backupMySQL(){
@@ -83,12 +102,26 @@ bk_backupMySQL(){
 bk_compress(){
   # Arguments:
   #   1: Files and directories separated by space
-  #   2: Output .tar path
+  #   2: Variable files and directories separated by space
+  #   3: Output .tar path
+  
+  filesToArchive=$1
+  varFilesToArchive=$2
+  archiveFile=$3
 
   cd $TEMPDIR
+  
+  excludeStatement=""
+  frozenVarFiles=""
+  for varFile in "$varFilesToArchive"
+  do
+    excludeStatement="$excludeStatement --exclude=$varFile"
+    cp -r --parent $varFile .
+    frozenVarFiles="$frozenVarFiles ${varFile:1}"
+  done
 
   bk_log "Tar is gonna begin:"
-  nice -n 19 tar cf $2 --ignore-failed-read $1 2> $TAR_LOG_FILE
+  nice -n 19 tar cf $archiveFile $excludeStatement --ignore-failed-read $filesToArchive $frozenVarFiles 2> $TAR_LOG_FILE
   local tarOutput=$?
   bk_log "Tar returned: "$tarOutput
 
@@ -238,7 +271,7 @@ bk_debug "Dumped DBS: $ARCHIVE_SQL_FILES"
 
 bk_log_separator
 
-bk_compress "$ARCHIVE_SQL_FILES $ARCHIVE_FILES" "$BACKDIR/$DATENAME.tar"
+bk_compress "$ARCHIVE_SQL_FILES $ARCHIVE_FILES" "$ARCHIVE_VAR_FILES" "$BACKDIR/$DATENAME.tar"
 TAR_OUTPUT=$?
 
 bk_log_separator
