@@ -24,7 +24,7 @@ fi
 
 bk_debug(){
   if [ $DEBUG_MODE -eq 1 ]; then
-    echo $1
+    echo "$1"
   fi
 }
 
@@ -123,7 +123,7 @@ bk_compress(){
   
   excludeStatement=""
   frozenVarFiles=""
-  for varFile in "$varFilesToArchive"
+  for varFile in $varFilesToArchive
   do
     excludeStatement="$excludeStatement --exclude=$varFile"
     cp -r --parent $varFile .
@@ -131,6 +131,7 @@ bk_compress(){
   done
 
   bk_log "Tar is gonna begin:"
+  bk_debug "It's running: tar cf $archiveFile $excludeStatement --ignore-failed-read $filesToArchive $frozenVarFiles"
   nice -n 19 tar cf $archiveFile $excludeStatement --ignore-failed-read $filesToArchive $frozenVarFiles 2> $TAR_LOG_FILE
   local tarOutput=$?
   bk_log "Tar returned: "$tarOutput
@@ -141,9 +142,12 @@ bk_compress(){
 bk_gzip(){
   # Arguments:
   #   1: Tar file path to gzip
+  
+  TAR=$1
 
   bk_log "Gzipping is gonna begin:"
-  nice -n 19 gzip -f --fast $1 2> $GZIP_LOG_FILE
+  bk_debug "It's running: gzip -f --fast $TAR"
+  nice -n 19 gzip -f --fast $TAR 2> $GZIP_LOG_FILE
   local gzipOutput=$?
   bk_log "Gzip returned: "$gzipOutput
 
@@ -256,7 +260,7 @@ bk_email(){
 
 bk_log "~~~---------------------------------------------------~~~"
 bk_log "        Server: $SERVER"
-bk_log "        Date: "$DATELOG
+bk_log "        Date: $DATELOG"
 bk_log "        Filename: $DATENAME"
 bk_log_separator
 
