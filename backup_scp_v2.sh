@@ -245,9 +245,9 @@ bk_email(){
 #======================================================================#
 
 bk_log "~~~---------------------------------------------------~~~"
-bk_log "        Server: "$SERVER
+bk_log "        Server: $SERVER"
 bk_log "        Date: "$DATELOG
-bk_log "        Filename: "$DATENAME
+bk_log "        Filename: $DATENAME"
 bk_log_separator
 
 SUCCESS=0
