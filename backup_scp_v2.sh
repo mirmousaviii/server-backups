@@ -4,7 +4,6 @@
 #    1. Correct output in bk_ssh when password is provided
 #    2. Get Log files as argument
 #    3. Make verbose optional by -v switch
-#    4. Write bk_optimizeFilenames
 
 __DIR__=$(dirname $0)
 
@@ -71,11 +70,22 @@ bk_optimizeFilenames(){
   #   1: Filename(s) separated by space
   
   filenames=$1
-  tmpFilenames=$filenames
   
-  for filename in "$filenames"
+  tmpFilenames=""
+  for filename in $filenames
   do
+    # remove extra slashes
+    correctFilename=$(echo "$filename" | sed s#//*#/#g)
+
+    # remove leading slash
+    if [ ! "$correctFilename" = "/" ]; then
+      correctFilename=${correctFilename%/}
+    fi
+
+    tmpFilenames="$tmpFilenames$correctFilename "
   done
+  
+  echo "$tmpFilenames"
 }
 
 bk_backupMySQL(){
@@ -256,6 +266,10 @@ SUCCESS=0
 # if not, create it
 bk_mkdirIfNotExists $BACKDIR
 bk_mkdirIfNotExists $TEMPDIR
+
+# optimize filenames
+ARCHIVE_FILES=$(bk_optimizeFilenames $ARCHIVE_FILES)
+ARCHIVE_VAR_FILES=$(bk_optimizeFilenames $ARCHIVE_VAR_FILES)
 
 if [ "$DBS" = "ALL" ]; then
   bk_log "Creating list of all your databases:"
