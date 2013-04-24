@@ -121,13 +121,20 @@ bk_compress(){
 
   cd $TEMPDIR
   
+  bk_debug "Files to archive: $filesToArchive"
+  bk_debug "Variable files to archive: $varFilesToArchive"
+  
   excludeStatement=""
   frozenVarFiles=""
+  bk_log "Caching variable files:"
   for varFile in $varFilesToArchive
   do
     excludeStatement="$excludeStatement --exclude=$varFile"
+    bk_debug "Exclude statement: $excludeStatement"
+    bk_debug "Copying $varFile"
     cp -r --parent $varFile .
     frozenVarFiles="$frozenVarFiles ${varFile:1}"
+    bk_debug "Cached here: $frozenVarFiles"
   done
 
   bk_log "Tar is gonna begin:"
@@ -272,8 +279,8 @@ bk_mkdirIfNotExists $BACKDIR
 bk_mkdirIfNotExists $TEMPDIR
 
 # optimize filenames
-ARCHIVE_FILES=$(bk_optimizeFilenames $ARCHIVE_FILES)
-ARCHIVE_VAR_FILES=$(bk_optimizeFilenames $ARCHIVE_VAR_FILES)
+ARCHIVE_FILES=$(bk_optimizeFilenames "$ARCHIVE_FILES")
+ARCHIVE_VAR_FILES=$(bk_optimizeFilenames "$ARCHIVE_VAR_FILES")
 
 if [ "$DBS" = "ALL" ]; then
   bk_log "Creating list of all your databases:"
